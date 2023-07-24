@@ -14,8 +14,8 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 import java.util.Arrays;
 
-
 public class UltimateBackups extends JavaPlugin {
+
 
     private boolean automaticBackupEnabled;
     private int backupFrequency;
@@ -25,6 +25,8 @@ public class UltimateBackups extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        int pluginId = 19226;
+        Metrics metrics = new Metrics(this, pluginId);
         // Carica le impostazioni dal file config.yml
         getConfig().options().copyDefaults(true);
         saveDefaultConfig();
@@ -41,8 +43,10 @@ public class UltimateBackups extends JavaPlugin {
         // Avvia il backup automatico se abilitato
         if (automaticBackupEnabled) {
             startAutomaticBackup();
+
         }
     }
+
 
     @Override
     public void onDisable() {
@@ -89,17 +93,21 @@ public class UltimateBackups extends JavaPlugin {
         String fileName = world.getName() + "-" + System.currentTimeMillis() + ".zip";
         File zipFile = new File(backupFolder, fileName);
 
-        try (ZipOutputStream zipOut = new ZipOutputStream(new FileOutputStream(zipFile))) {
-            // Aggiungi il mondo alla cartella ZIP
-            File worldFolder = world.getWorldFolder();
-            zipFile(worldFolder, zipOut, "");
+        // Utilizza un blocco synchronized per evitare interferenze con altri processi
+        synchronized (this) {
+            try (ZipOutputStream zipOut = new ZipOutputStream(new FileOutputStream(zipFile))) {
+                // Aggiungi il mondo alla cartella ZIP
+                File worldFolder = world.getWorldFolder();
+                zipFile(worldFolder, zipOut, "");
 
-            getLogger().info("Backup del mondo '" + world.getName() + "' completato con successo.");
-        } catch (IOException e) {
-            getLogger().severe("Si è verificato un errore durante il backup del mondo '" + world.getName() + "'.");
-            e.printStackTrace();
+                getLogger().info("Backup del mondo '" + world.getName() + "' completato con successo.");
+            } catch (IOException e) {
+                getLogger().severe("Si è verificato un errore durante il backup del mondo '" + world.getName() + "'.");
+                e.printStackTrace();
+            }
         }
     }
+
 
     private void zipFile(File fileToZip, ZipOutputStream zipOut, String parentDir) throws IOException {
         if (fileToZip.isHidden()) {
