@@ -1,7 +1,7 @@
 automatic_backup: true
 backup_frequency: 24
-backup_complete_message: "&aIl backup dei mondi è stato completato con successo!"
-backup_error_message: "&cSi è verificato un errore durante il backup dei mondi."
+backup_complete_message: "&aThe worlds backup is completed!"
+backup_error_message: "&cError during the Backup process."
 max_backups: 3
 
 
