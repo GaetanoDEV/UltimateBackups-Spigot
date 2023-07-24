@@ -9,8 +9,11 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Comparator;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
+import java.util.Arrays;
+
 
 public class UltimateBackups extends JavaPlugin {
 
@@ -18,6 +21,7 @@ public class UltimateBackups extends JavaPlugin {
     private int backupFrequency;
     private String backupCompleteMessage;
     private String backupErrorMessage;
+    private int maxBackups;
 
     @Override
     public void onEnable() {
@@ -28,6 +32,7 @@ public class UltimateBackups extends JavaPlugin {
         backupFrequency = getConfig().getInt("backup_frequency");
         backupCompleteMessage = getConfig().getString("backup_complete_message");
         backupErrorMessage = getConfig().getString("backup_error_message");
+        maxBackups = getConfig().getInt("max_backups");
 
         // Registra il comando /startbackup e aggiungi il permesso "ultimatebackup.use"
         getCommand("startbackup").setExecutor(this);
@@ -66,6 +71,9 @@ public class UltimateBackups extends JavaPlugin {
             // Esegui il backup del mondo
             backupWorld(world);
         }
+        // Rimuovi i vecchi backup se superano il numero massimo consentito
+        removeOldBackups();
+
         // Invia un messaggio di backup completato in chat
         sender.sendMessage(backupCompleteMessage);
     }
@@ -114,6 +122,22 @@ public class UltimateBackups extends JavaPlugin {
             zipOut.write(buffer, 0, length);
         }
         fis.close();
+    }
+
+    private void removeOldBackups() {
+        File backupFolder = new File(getDataFolder(), "backups");
+        File[] backupFiles = backupFolder.listFiles();
+
+        if (backupFiles != null && backupFiles.length > maxBackups) {
+            Arrays.sort(backupFiles, Comparator.comparingLong(File::lastModified));
+
+            int excessBackups = backupFiles.length - maxBackups;
+            for (int i = 0; i < excessBackups; i++) {
+                if (backupFiles[i].isFile()) {
+                    backupFiles[i].delete();
+                }
+            }
+        }
     }
 
     private void startAutomaticBackup() {

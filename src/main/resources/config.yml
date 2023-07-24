@@ -2,5 +2,7 @@ automatic_backup: true
 backup_frequency: 24
 backup_complete_message: "&aIl backup dei mondi è stato completato con successo!"
 backup_error_message: "&cSi è verificato un errore durante il backup dei mondi."
+max_backups: 3
+
 
 
