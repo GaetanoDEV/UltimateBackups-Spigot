@@ -1,9 +1,0 @@
-name: UltimateBackups
-version: '1.0'
-main: it.gaetanodev.ultimatebackups.UltimateBackups
-api-version: 1.13
-commands:
-  startbackup:
-    description: Inizia il backup manuale dei mondi.
-    permission: ultimatebackup.use
-
