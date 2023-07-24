@@ -1,7 +1,12 @@
+# Enable automatic backups with custom frequency
 automatic_backup: true
+# Backup frequecy in hours
 backup_frequency: 24
+# Backup Complete chat message
 backup_complete_message: "&aThe worlds backup is completed!"
+# Backup error chat message
 backup_error_message: "&cError during the Backup process."
+# Max backups to keep
 max_backups: 3
 
 
