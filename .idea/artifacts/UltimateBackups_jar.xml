@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="UltimateBackups:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/UltimateBackups_jar</output-path>
+    <root id="archive" name="UltimateBackups.jar">
+      <element id="module-output" name="UltimateBackups" />
+    </root>
+  </artifact>
+</component>
