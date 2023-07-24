@@ -1,4 +1,3 @@
 name: UltimateBackups
-version: '${project.version}'
+version: '1.0'
 main: it.gaetanodev.ultimatebackups.UltimateBackups
-api-version: '1.20'
